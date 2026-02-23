@@ -24,18 +24,16 @@ it('parses delivered shipment response', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '12345',
-                'CustomerBarcode' => 'ORD-001',
-                'CargoEventLogModelList' => [[
-                    'CargoEventType' => 29,
-                    'TimeStamp' => '2024-01-15T14:30:00+03:00',
-                    'LocationName' => 'ISTANBUL',
-                    'EventDescription' => 'Teslim edildi',
-                ]],
+        'Payload' => [[
+            'ShipmentId' => '12345',
+            'CustomerBarcode' => 'ORD-001',
+            'CargoEventLogModelList' => [[
+                'CargoEventType' => 29,
+                'TimeStamp' => '15.01.2024 14:30:00',
+                'LocationName' => 'ISTANBUL',
+                'EventDescription' => 'Teslim edildi',
             ]],
-        ],
+        ]],
     ]);
 
     expect($response->isSuccessful())->toBeTrue();
@@ -55,29 +53,27 @@ it('parses in-transit response with multiple events', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '12345',
-                'CustomerBarcode' => 'ORD-001',
-                'CargoEventLogModelList' => [
-                    [
-                        'CargoEventType' => 1,
-                        'TimeStamp' => '2024-01-14T10:00:00+03:00',
-                        'LocationName' => 'ISTANBUL',
-                    ],
-                    [
-                        'CargoEventType' => 12,
-                        'TimeStamp' => '2024-01-14T14:00:00+03:00',
-                        'LocationName' => 'ISTANBUL',
-                    ],
-                    [
-                        'CargoEventType' => 17,
-                        'TimeStamp' => '2024-01-15T08:00:00+03:00',
-                        'LocationName' => 'ANKARA',
-                    ],
+        'Payload' => [[
+            'ShipmentId' => '12345',
+            'CustomerBarcode' => 'ORD-001',
+            'CargoEventLogModelList' => [
+                [
+                    'CargoEventType' => 1,
+                    'TimeStamp' => '14.01.2024 10:00:00',
+                    'LocationName' => 'ISTANBUL',
                 ],
-            ]],
-        ],
+                [
+                    'CargoEventType' => 12,
+                    'TimeStamp' => '14.01.2024 14:00:00',
+                    'LocationName' => 'ISTANBUL',
+                ],
+                [
+                    'CargoEventType' => 17,
+                    'TimeStamp' => '15.01.2024 08:00:00',
+                    'LocationName' => 'ANKARA',
+                ],
+            ],
+        ]],
     ]);
 
     $info = $response->getTrackingInfo();
@@ -93,16 +89,14 @@ it('parses cancelled response', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '12345',
-                'CustomerBarcode' => 'ORD-001',
-                'CargoEventLogModelList' => [[
-                    'CargoEventType' => 31,
-                    'TimeStamp' => '2024-01-15T09:00:00+03:00',
-                ]],
+        'Payload' => [[
+            'ShipmentId' => '12345',
+            'CustomerBarcode' => 'ORD-001',
+            'CargoEventLogModelList' => [[
+                'CargoEventType' => 31,
+                'TimeStamp' => '15.01.2024 09:00:00',
             ]],
-        ],
+        ]],
     ]);
 
     $info = $response->getTrackingInfo();
@@ -114,16 +108,14 @@ it('parses failure response (recipient refused)', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '12345',
-                'CustomerBarcode' => 'ORD-001',
-                'CargoEventLogModelList' => [[
-                    'CargoEventType' => 28,
-                    'TimeStamp' => '2024-01-15T14:00:00+03:00',
-                ]],
+        'Payload' => [[
+            'ShipmentId' => '12345',
+            'CustomerBarcode' => 'ORD-001',
+            'CargoEventLogModelList' => [[
+                'CargoEventType' => 28,
+                'TimeStamp' => '15.01.2024 14:00:00',
             ]],
-        ],
+        ]],
     ]);
 
     $info = $response->getTrackingInfo();
@@ -135,17 +127,15 @@ it('parses out for delivery response', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '12345',
-                'CustomerBarcode' => 'ORD-001',
-                'CargoEventLogModelList' => [[
-                    'CargoEventType' => 18,
-                    'TimeStamp' => '2024-01-15T08:30:00+03:00',
-                    'LocationName' => 'KADIKOY',
-                ]],
+        'Payload' => [[
+            'ShipmentId' => '12345',
+            'CustomerBarcode' => 'ORD-001',
+            'CargoEventLogModelList' => [[
+                'CargoEventType' => 18,
+                'TimeStamp' => '15.01.2024 08:30:00',
+                'LocationName' => 'KADIKOY',
             ]],
-        ],
+        ]],
     ]);
 
     $info = $response->getTrackingInfo();
@@ -157,9 +147,7 @@ it('handles empty shipment list', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [],
-        ],
+        'Payload' => [],
     ]);
 
     $info = $response->getTrackingInfo();
@@ -210,12 +198,10 @@ it('uses ShipmentId as tracking number when barcode is missing', function () {
     $response = createTrackingResponseWith([
         'ResultCode' => 200,
         'ResultMessage' => 'OK',
-        'Payload' => [
-            'ShipmentModelList' => [[
-                'ShipmentId' => '99999',
-                'CargoEventLogModelList' => [],
-            ]],
-        ],
+        'Payload' => [[
+            'ShipmentId' => '99999',
+            'CargoEventLogModelList' => [],
+        ]],
     ]);
 
     $info = $response->getTrackingInfo();

@@ -14,7 +14,7 @@ beforeEach(function () {
         createMockHttpClient(json_encode([
             'ResultCode' => 200,
             'ResultMessage' => 'OK',
-            'Payload' => ['ShipmentModelList' => []],
+            'Payload' => [],
         ])),
         createMockRequestFactory(),
         createMockStreamFactory(),

@@ -108,7 +108,8 @@ class GetTrackingStatusResponse extends AbstractResponse implements TrackingResp
             $dateTime = new \DateTimeImmutable();
             if (isset($item['TimeStamp']) && is_string($item['TimeStamp']) && $item['TimeStamp'] !== '') {
                 try {
-                    $dateTime = new \DateTimeImmutable($item['TimeStamp']);
+                    $parsed = \DateTimeImmutable::createFromFormat('d.m.Y H:i:s', $item['TimeStamp']);
+                    $dateTime = $parsed instanceof \DateTimeImmutable ? $parsed : new \DateTimeImmutable($item['TimeStamp']);
                 } catch (\Exception) {
                     // Keep default
                 }
@@ -146,12 +147,12 @@ class GetTrackingStatusResponse extends AbstractResponse implements TrackingResp
 
         $payload = $this->data['Payload'];
 
-        if (!is_array($payload) || !isset($payload['ShipmentModelList'])) {
+        if (!is_array($payload)) {
             return [];
         }
 
         /** @var array<int, array<string, mixed>> */
-        return $payload['ShipmentModelList'];
+        return $payload;
     }
 
     private function getResultCode(): float|int|null
