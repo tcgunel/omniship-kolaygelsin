@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Size Gönderilecek Olan JSON": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "ShipmentId": {
+              "type": "string",
+              "description": "Kolay Gelsin gönderi numarası."
+            },
+            "ShipmentItemId": {
+              "type": "string",
+              "description": "Gönderiye bağlı paketin Kolay Gelsin Id'si"
+            },
+            "CustomerTrackingId": {
+              "type": "string",
+              "description": "Barkoddan farklı olarak müşterinin pakete özgü takip numarası"
+            },
+            "CustomerBarcode": {
+              "type": "string",
+              "description": "Paket üzerindeki müşteri barkodu"
+            },
+            "CustomerSpecificCode": {
+              "type": "string",
+              "description": "Gönderiyi temsil eden müşteri kodu"
+            },
+            "CargoEventLogModelList": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "CargoEventType": {
+                    "type": "string",
+                    "enum": [
+                      "1: Gönderi Kolay Gelsin sistemine kayıt edildi",
+                      "12: paket Kolay Gelsin tarafından teslim alındı",
+                      "17: Dağıtım yapacak kuryenin aracına yüklendi",
+                      "18: Dağıtım Kuryesi Transfer Merkezinden ayrıldı, teslimat adresine doğru yola çıktı",
+                      "25: Alıcı adresi hatalı",
+                      "26: Alıcı teslimat adresinde bulunamadı",
+                      "28: Alıcı teslimatı reddetti",
+                      "29: Gönderi teslim edildi",
+                      "31: Gönderen tarafından gönderi durduruldu, gönderene iade edilecek",
+                      "32: Alıcı talebi ile gönderinin iade gönderisi kaydedildi",
+                      "33: Gönderi kayıp",
+                      "35: Alıcı adresi problemli",
+                      "39: Dağıtım görevi ertesi iş gününe devredildi",
+                      "46: Devir depoya alınan gönderinin operasyonel iadesi kaydedildi",
+                      "58: Hasar raporu oluşturuldu"
+                    ]
+                  },
+                  "Latitude": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği enlem"
+                  },
+                  "Longitude": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği boylam"
+                  },
+                  "LocationName": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği yer"
+                  },
+                  "NumberPlate": {
+                    "type": "string",
+                    "description": "Gönderinin taşındığı veya yüklenmiş bulunduğu araç plakası"
+                  },
+                  "CourierName": {
+                    "type": "string",
+                    "description": "Gönderi eğer kuryeye zimmetlenmiş durumda ise kuryenin adı"
+                  },
+                  "DocumentType": {
+                    "type": "string",
+                    "description": "Gönderiye üzerinde alınan aksiyona dair bir doküman ilişkisi bulunması durumunda dokümanın tipini belirtir.",
+                    "enum": [
+                      "4: Teslim edilmiş gönderinin müşteri imzası",
+                      "5: Müşteri adreste bulunamadığı durumda kapıya yapıştırılıan notun fotoğrafı",
+                      "7: Hasar raporu",
+                      "8: Gönderinin zimmetlendiği kurye fotoğrafı",
+                      "9: Alcıya gönderilen email",
+                      "10: Alıcıya gönderilen sms"
+                    ]
+                  },
+                  "DocumentId": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Document alanının dolu olması halinde ilişkili olan dokümanın Id si"
+                  },
+                  "EventDetailModel": {
+                    "type": "object",
+                    "properties": {
+                      "DeliveryCancellationReason": {
+                        "type": "string",
+                        "description": "Gönderinin iptal nedeni",
+                        "enum": [
+                          "1: Standart",
+                          "2: Yasal",
+                          "3: Gönderici durdurdu"
+                        ]
+                      },
+                      "DeliveredPersonRole": {
+                        "type": "string",
+                        "description": "Gönderinin teslim alan kişinin yakınlık tipi"
+                      },
+                      "DeliveredPersonName": {
+                        "type": "string",
+                        "description": "Gönderinin teslim edildiği kişinin adı"
+                      },
+                      "PreviousDeliveryDate": {
+                        "type": "string",
+                        "description": "Planlanan eski teslimat tarihi"
+                      },
+                      "NewDeliveryDate": {
+                        "type": "string",
+                        "description": "Planlanan yeni teslimat tarihi"
+                      },
+                      "PreviousDeliveryTime": {
+                        "type": "string",
+                        "description": "Planlanan eski teslimat zaman periyodu"
+                      },
+                      "NewDeliveryTime": {
+                        "type": "string",
+                        "description": "Planlanan yeni teslimat zaman periyodu"
+                      },
+                      "ReturnShipmentId": {
+                        "type": "string",
+                        "description": "İade edilecek gönderinin yeni Kolay Gelsin gönderi numarası"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

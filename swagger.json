@@ -1,0 +1,990 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Service Documentation",
+    "description": "Kolay Gelsin Express Cargo Integration Service Documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://apiintg.klyglsn.com/api/request",
+      "description": "Test Server"
+    }
+  ],
+  "paths": {
+    "/SaveRecipient": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "summary": "Alıcı Kaydetme",
+        "description": "İlk işlem olarak gönderinin alıcısını kaydetmek gerekmektedir. Bu işlem sonucunda dönülen __RecipientId__'sinin, gönderi kayıt aşamasıda __RecipientId__ olarak gönderilmesi beklenmektedir.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyRequestBody"
+              },
+              "examples": {
+                "CorporateRecipient": {
+                  "summary": "Kurumsal Alıcı Kaydetme",
+                  "value": {
+                    "RecipientType": 2,
+                    "Address": {
+                      "CityId": 34,
+                      "TownName": "Sancaktepe",
+                      "AddressTypeId": 2,
+                      "AddressText": "Ekol Lojistik İmam Hatip Cd. Eyüp Sultan Mah. Sancaktepe İstanbul",
+                      "BuildingNumber": 1,
+                      "FloorNumber": 1,
+                      "DoorNumber": 1,
+                      "BuldingName": "Ekol",
+                      "PostalCode": "34500",
+                      "CompanyTitle": "Ekol Lojistik",
+                      "CompanyDepartment": "Kargo",
+                      "Direction": "Ekol lojistik lavinya tesisi samandıra"
+                    },
+                    "RecipientTaxIdentityNumber": "1234567891",
+                    "Email": "ekol@ekol.com",
+                    "RecipientTitle": "Ekol Lojistik AŞ",
+                    "Gsm": "123457890",
+                    "OnlyDeliverToRecipient": false,
+                    "SaveOutOfCoverage": false
+                  }
+                },
+                "IndividualRecipient": {
+                  "summary": "Bireysel Alıcı kaydetme",
+                  "value": {
+                    "RecipientType": 1,
+                    "Address": {
+                      "CityId": 34,
+                      "TownName": "Kadıköy",
+                      "AddressTypeId": 1,
+                      "AddressText": "Mehmet Akman Sk. Koşuyolu Mh. Kadıköy İstanbul",
+                      "BuildingNumber": 1,
+                      "FloorNumber": 1,
+                      "DoorNumber": 1,
+                      "BuldingName": "Apartman",
+                      "Direction": "Adres tarifi",
+                      "PostalCode": "34500"
+                    },
+                    "RecipientIdentityNumber": "12345678910",
+                    "Email": "bireysel@musteri.com",
+                    "RecipientName": "Bireysel",
+                    "RecipientSurname": "Müşteri",
+                    "Gsm": "1234567890",
+                    "OnlyDeliverToRecipient": false,
+                    "SaveOutOfCoverage": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alıcı ekleme işlem başarıyla gerçekleştirildi.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveRecipientResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    },
+    "/SaveIntegrationShipment": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "summary": "Gönderi Kaydetme",
+        "description": "Gönderinin bilgilerinin Kolay Gelsin sistemine kaydedileceği servistir.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveShipmentBodyModel"
+              },
+              "examples": {
+                "BoxShipmentBodyExample": {
+                  "summary": "2 parçalı koli gönderi kaydetme isteği",
+                  "value": {
+                    "ShipmentItemList": [
+                      {
+                        "Width": 10,
+                        "Length": 20,
+                        "Height": 30,
+                        "Weight": 1,
+                        "ContentText": "Detay",
+                        "DeliveryNote": "Müşteri İrsaliye Numarası",
+                        "DeliveryNoteDate": "2018-07-19T00:00:00+03:00",
+                        "HasCommercialValue": true,
+                        "CustomerBarcode": "ShpItem1",
+                        "CustomerTrackingId": "ABC123456"
+                      },
+                      {
+                        "Width": 22,
+                        "Length": 29,
+                        "Height": 38,
+                        "Weight": 2,
+                        "ContentText": "Detay",
+                        "DeliveryNote": "Müşteri İrsaliye Numarası",
+                        "DeliveryNoteDate": "2018-07-19T00:00:00+03:00",
+                        "HasCommercialValue": true,
+                        "CustomerBarcode": "ShpItem2",
+                        "CustomerTrackingId": "ABC123457"
+                      }
+                    ],
+                    "Recipient": {
+                      "RecipientId": 45
+                    },
+                    "SenderCustomer": {
+                      "Address": {
+                        "AddressId": 1
+                      },
+                      "CustomerId": 1
+                    },
+                    "PayingParty": 1,
+                    "PackageType": 2,
+                    "OnlyDeliverToRecipient": true,
+                    "CustomerSpecificCode": "Shp1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Gönderi kaydetme işlemi başarıyla gerçekleştirildi.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveShipmentResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    },
+    "/CancelPickupAndDelivery": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "summary": "Gönderi İptal Etme",
+        "description": "Henüz Kolay Gelsin tarafından toplanmamış gönderinin iptalini sağlar. Toplanmış ancak henüz teslim edilmemiş gönderinin teslimat sürecini sonlandırarak iade sürecini başlatır.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelPickupAndDeliveryModel"
+              },
+              "example": {
+                "ShipmentId": "9442",
+                "DeliveryCancellationReason": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "İşlemi başarıyla gerçekleştirildi."
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    },
+    "/GetCorporateShipmentsStatus": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "summary": "Gönderi Bilgi Sorgulama",
+        "description": "Gönderinin durumlarının ve üzerlerinde alınan aksiyonlara dair bilgilerin sorgulanabileceği servistir. ShipmentIdList, CustomerSpecificCodeList, CustomerBarcodeList ve CustomerTrackingIdList parametrelerinden en az biri dolu olacak şekilde ve OnlyLatestEvents parametresi belirtilerek post isteğinde bulunulmalıdır.<br><br> İlgilendiğiniz ve sorgulama sonucunda size servis cevabında dönülemesini istediğiniz gönderi durumlarını (aksiyonlarını)  'Webhook Ayarlar' tabından seçmeniz gerekmektedir. Bu tab üzerinden seçilmemiş hiçbir aksiyon servis cevabında dönülmeyecektir.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCorporateShipmentsStatusModel"
+              },
+              "example": {
+                "ShipmentIdList": [],
+                "CustomerSpecificCodeList": [],
+                "CustomerBarcodeList": [],
+                "CustomerTrackingIdList": [
+                  "ABC12345898",
+                  "ABC12345"
+                ],
+                "OnlyLatestEvents": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "İşlemi başarıyla gerçekleştirildi.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCorporateShipmentsStatusResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    },
+    "/GetCorporateCustomerCargoEventTypes": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "accept-language",
+            "description": "Kargo aksiyonları dil seçeneği",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "tr-TR",
+                "en-EN"
+              ]
+            },
+            "required": true
+          }
+        ],
+        "summary": "Gönderi Bilgi Sorgulamada Kullanılacak Durumların Çekilmesi",
+        "description": "__GetCorporateShipments__ servis cevabında dönülen __CargoEventType__ parametresinin sizin için tanımlanmış olası değerlerinin çekildiği servistir. Sadece bilgi sorgulamak için kullanılabilir. Operasyonel bir gerekliliği yoktur. Ancak operasyonel bir gereklilikle yeni bir statü eklenmesi durumunda ilgili statünün ne anlama geldiğini bu servisi çağırarak öğrenebilirsiniz.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "İşlemi başarıyla gerçekleştirildi.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCorporateCustomerCargoEventTypesResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    },
+    "/GetDocumentForHistory": {
+      "post": {
+        "tags": [
+          "Servisler"
+        ],
+        "summary": "Gönderi Dokümanı",
+        "description": "__GetShipmentCorporateEvents__ veya __Webhook__ servislerinden edinebileceğiniz __DocumentId__ si size ulaşan ve  gönderiye ait bir doküman varsa ilgili __DocumentId__ ve __DocumentType__ ile dokümanın çekilebileceği servistir.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDocumentForHistoryBodyModel"
+              },
+              "example": {
+                "DocumentId": "00000000-0000-0000-0000-000000000000",
+                "DocumentType": 4
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "İşlemi başarıyla gerçekleştirildi.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDocumentForHistoryResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "İşlem başarısız."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EmptyRequestBody": {
+        "description": "Kurumsal ve Bireysel Alıcı Modellerini aşağıdaki schemas kısmında görebilirsiniz. Kurumsal: CorporateRecipientModel, Bireysel: IndividualRecipientModel",
+        "type": "object"
+      },
+      "CorporateRecipientModel": {
+        "type": "object",
+        "required": [
+          "RecipientTitle",
+          "Address"
+        ],
+        "properties": {
+          "RecipientType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Alıcı Tipi: 1-Bireysel, 2- Kurumsal"
+          },
+          "Address": {
+            "type": "object",
+            "description": "Aşağıda parametreleri yer alan Address nesnesi.",
+            "required": [
+              "AddressText",
+              "CityId"
+            ],
+            "properties": {
+              "CityId": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Alıcı adresi il id’si. İl plakaları olarak gönderilecektir"
+              },
+              "TownName": {
+                "type": "string",
+                "description": "Alıcı adresi ilçe ismi"
+              },
+              "AddressTypeId": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Alıcı adresinin tipi: 1-Ev adresi, 2-İş adresi"
+              },
+              "AddressText": {
+                "type": "string",
+                "description": "Alıcı adresi metni"
+              },
+              "BuildingNumber": {
+                "type": "string",
+                "description": "Alıcı adresi bina numarası"
+              },
+              "FloorNumber": {
+                "type": "string",
+                "description": "Alıcı adresi kat numarası"
+              },
+              "DoorNumber": {
+                "type": "string",
+                "description": "Alıcı adresi kapı numarası"
+              },
+              "BuldingName": {
+                "type": "string",
+                "description": "Alıcı adresi bina adı"
+              },
+              "PostalCode": {
+                "type": "string",
+                "description": "Alıcı adresi posta kodu"
+              },
+              "CompanyTitle": {
+                "type": "string",
+                "description": "Alıcı adresi iş adresi ise, Şirket ünvanı"
+              },
+              "CompanyDepartment": {
+                "type": "string",
+                "description": "Alıcı adresi iş adresi ise, Şirket Departmanı"
+              },
+              "Direction": {
+                "type": "string",
+                "description": "Alıcı adresi tarifi"
+              }
+            }
+          },
+          "RecipientTaxIdentityNumber": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcı kurumsal müşteri ise Vergi Kimlik numarası"
+          },
+          "Email": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcının email adresi"
+          },
+          "RecipientTitle": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcı ünvan bilgisi"
+          },
+          "Gsm": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcının GSM numarası"
+          },
+          "OnlyDeliverToRecipient": {
+            "type": "boolean",
+            "description": "Eğer gönderinin sadece alıcıya teslim edilmesi gerekiyorsa bu değer true gönderilmelidir."
+          },
+          "SaveOutOfCoverage": {
+            "type": "boolean",
+            "description": "Alıcı adresinin Kolay Gelsin çalışma alanının dışında olması durumunda alıcı bilgilerinin kaydedilip kaydedilmeyeceğini belirler. True= Alıcı adresi Kolay Gelsin çalışma alanı dışında olasa bile kaydet, False= Alıcı adresi Kolay Gelsin çalışma alanı dışında ise kaydetme"
+          }
+        }
+      },
+      "IndividualRecipientModel": {
+        "type": "object",
+        "required": [
+          "RecipientName",
+          "RecipientSurname",
+          "Address"
+        ],
+        "properties": {
+          "RecipientType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Alıcı Tipi: 1-Bireysel, 2- Kurumsal"
+          },
+          "Address": {
+            "type": "object",
+            "description": "Aşağıda parametreleri yer alan Address nesnesi.",
+            "required": [
+              "AddressText",
+              "CityId"
+            ],
+            "properties": {
+              "CityId": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Alıcı adresi il id’si. İl plakaları olarak gönderilecektir"
+              },
+              "TownName": {
+                "type": "string",
+                "description": "Alıcı adresi ilçe ismi"
+              },
+              "AddressTypeId": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Alıcı adresinin tipi: 1-Ev adresi, 2-İş adresi"
+              },
+              "AddressText": {
+                "type": "string",
+                "description": "Alıcı adresi metni"
+              },
+              "BuildingNumber": {
+                "type": "string",
+                "description": "Alıcı adresi bina numarası"
+              },
+              "FloorNumber": {
+                "type": "string",
+                "description": "Alıcı adresi kat numarası"
+              },
+              "DoorNumber": {
+                "type": "string",
+                "description": "Alıcı adresi kapı numarası"
+              },
+              "BuldingName": {
+                "type": "string",
+                "description": "Alıcı adresi bina adı"
+              },
+              "PostalCode": {
+                "type": "string",
+                "description": "Alıcı adresi posta kodu"
+              },
+              "CompanyTitle": {
+                "type": "string",
+                "description": "Alıcı adresi iş adresi ise, Şirket ünvanı"
+              },
+              "CompanyDepartment": {
+                "type": "string",
+                "description": "Alıcı adresi iş adresi ise, Şirket Departmanı"
+              },
+              "Direction": {
+                "type": "string",
+                "description": "Alıcı adresi tarifi"
+              }
+            }
+          },
+          "RecipientIdentityNumber": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcı bireysel müşteri ise TC Kimlik numarası"
+          },
+          "Email": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcının email adresi"
+          },
+          "RecipientName": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcı adı"
+          },
+          "RecipientSurname": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcı soyadı"
+          },
+          "Gsm": {
+            "type": "string",
+            "description": "Gönderim yapılacak alıcının GSM numarası"
+          },
+          "OnlyDeliverToRecipient": {
+            "type": "boolean",
+            "description": "Eğer gönderinin sadece alıcıya teslim edilmesi gerekiyorsa bu değer true gönderilmelidir."
+          },
+          "SaveOutOfCoverage": {
+            "type": "boolean",
+            "description": "Alıcı adresinin Kolay Gelsin çalışma alanının dışında olması durumunda alıcı bilgilerinin kaydedilip kaydedilmeyeceğini belirler. True= Alıcı adresi Kolay Gelsin çalışma alanı dışında olasa bile kaydet, False= Alıcı adresi Kolay Gelsin çalışma alanı dışında ise kaydetme"
+          }
+        }
+      },
+      "SaveShipmentResponse": {
+        "type": "object",
+        "properties": {
+          "ShipmentId": {
+            "type": "string",
+            "description": "Kaydedilen gönderinin Kolay Gelsin Gönderi Numarası"
+          },
+          "CustomerSpecificCode": {
+            "type": "string",
+            "description": "Müşterinin gönderiyi takip etmekte kullanabileceği ve kendisinin belirlediği özel kod"
+          },
+          "ShipmentItemLabelList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Eğer kendi etiketinizi değil de Kolay Gelsin etiketi kullanmak isterseniz her bir gönderi parçası için ayrı üretilmiş etiket bilgileri listesi",
+              "properties": {
+                "ShipmentItemId": {
+                  "type": "string",
+                  "description": "Kaydedilen gönderi parçasının Kolay Gelsin Gönderi Parça Numarası"
+                },
+                "CustomerBarcode": {
+                  "type": "string",
+                  "description": "Gönderi parçasının müşteri barkodu"
+                },
+                "ShipmentItemIdLabel": {
+                  "type": "string",
+                  "description": "Kolay Gelsin etiketi ( HTML formatında)"
+                }
+              }
+            }
+          },
+          "ShipmentTrackingLink":{
+            "type": "string",
+            "description": "Müşterinin gönderiyi takip edebileceği Kolay Gelsin gönderi takip linki"
+          }
+        }
+      },
+      "SaveRecipientResponse": {
+        "type": "object",
+        "properties": {
+          "RecipientId": {
+            "type": "integer",
+            "description": "SaveIntegrationShipment metodunda RecipientId alanında gönderilecek gönderinin alıcı ID’si."
+          }
+        }
+      },
+      "SaveShipmentBodyModel": {
+        "type": "object",
+        "required": [
+          "SenderCustomer",
+          "Recipient",
+          "PackageType",
+          "ShipmentItemList"
+        ],
+        "properties": {
+          "ShipmentItemList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Gönderi içerisinde yer alan parça bilgilerini içeren nesne dizisi",
+              "required": [
+                "CustomerTrackingId"
+              ],
+              "properties": {
+                "Width": {
+                  "type": "integer",
+                  "description": "Gönderi içerisindeki parçanın eni"
+                },
+                "Length": {
+                  "type": "integer",
+                  "description": "Gönderi içerisindeki parçanın boyu"
+                },
+                "Height": {
+                  "type": "integer",
+                  "description": "Gönderi içerisindeki parçanın yüksekliği"
+                },
+                "Weight": {
+                  "type": "integer",
+                  "description": "Gönderi içerisindeki parçanın ağırlığı (Kilogram cinsinden)"
+                },
+                "ContentText": {
+                  "type": "string",
+                  "description": "Gönderi parçasının içeriğe dair açıklaması"
+                },
+                "DeliveryNote": {
+                  "type": "string",
+                  "description": "Gönderi parçasının ticari değeri varsa müşteri irsaliye numarası"
+                },
+                "DeliveryNoteDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Gönderi parçasının ticari değeri varsa müşteri irsaliye tarihi"
+                },
+                "HasCommercialValue": {
+                  "type": "boolean",
+                  "description": "Gönderi parçasının ticari değeri var mı?"
+                },
+                "CustomerBarcode": {
+                  "type": "string",
+                  "description": "Gönderi parçasının müşteri barkodu (Kolay Gelsin barkodu olmak zorunda değildir. Müşteri barkodu ile taşıma yapmayı tercih etmekteyiz.)"
+                },
+                "CustomerTrackingId": {
+                  "type": "string",
+                  "description": "Müşterinin parça takibi için kendisinin belirlediği ve sorgulamalarda kullanılabileceği alan"
+                }
+              }
+            }
+          },
+          "Recipient": {
+            "type": "object",
+            "required": [
+              "RecipientId"
+            ],
+            "properties": {
+              "RecipientId": {
+                "type": "integer",
+                "description": "Öncesinde çağrılan SaveRecipient servis sonucunda dönülen alıcı RecipientId si. Alıcı bilgisinin ve alıcı adresinin aynı olduğundan eminseniz, her gönderi kayıt öncesinde SaveRecipient servisini çağırmak zorunda değilsiniz, önceden edindiğiniz RecipientId değerinin aynısını o alıcının her gönderisi için kullanabilirsiniz."
+              }
+            }
+          },
+          "SenderCustomer": {
+            "type": "object",
+            "required": [
+              "Address",
+              "CustomerId"
+            ],
+            "properties": {
+              "Address": {
+                "type": "object",
+                "required": [
+                  "AddressId"
+                ],
+                "properties": {
+                  "AddressId": {
+                    "type": "integer",
+                    "description": "Gönderen müşteri adres bilgilerini içeren nesne"
+                  }
+                }
+              },
+              "CustomerId": {
+                "type": "integer",
+                "description": "Kolay Gelsin tarafından sağlanacak olan gönderen müşteri numarası"
+              }
+            }
+          },
+          "PayingParty": {
+            "type": "integer",
+            "description": "Kargo taşıma bedelinin tahsil edileceği taraf (1 = Gönderici, 2 = Alıcı)"
+          },
+          "PackageType": {
+            "type": "integer",
+            "description": "Taşınacak kargonun paket tipi (1 = Dosya, 2 = Koli)"
+          },
+          "OnlyDeliverToRecipient": {
+            "type": "boolean",
+            "description": "Kargo sadece alıcısına mı teslim edilebilir?"
+          },
+          "CustomerSpecificCode": {
+            "type": "string",
+            "description": "Müşterinin gönderiyi takip etmekte kullanabileceği ve kendisinin belirlediği özel kod"
+          }
+        }
+      },
+      "CancelPickupAndDeliveryModel": {
+        "type": "object",
+        "required": [
+          "ShipmentId",
+          "DeliveryCancellationReason"
+        ],
+        "properties": {
+          "ShipmentId": {
+            "type": "string",
+            "description": "Kolay Gelsin gönderi numarası."
+          },
+          "DeliveryCancellationReason": {
+            "type": "integer",
+            "description": "1-Standard, 2-Fraud"
+          }
+        }
+      },
+      "GetCorporateShipmentsStatusModel": {
+        "type": "object",
+        "properties": {
+          "ShipmentIdList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Sorgulanmak istenen gönderinin Kolay Gelsin gönderi numarası listesi"
+            }
+          },
+          "CustomerSpecificCodeList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Gönderiyi temsil eden müşteri kodu listesi"
+            }
+          },
+          "CustomerBarcodeList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Paket üzerinden yer alan müşteri barkodu listesi"
+            }
+          },
+          "CustomerTrackingIdList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Barkoddan farklı olarak müşterinin pakete özgü takip numarası listesi"
+            }
+          },
+          "OnlyLatestEvents": {
+            "type": "boolean",
+            "description": "true =Sorgulama yapılmak istenen gönderilerin sadece en son aksiyonları dönülür, false= Sorgulama yapılmak istenen gönderilerin tüm aksiyonları dönülür"
+          }
+        }
+      },
+      "GetCorporateShipmentsStatusResponseModel": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Gönderi içerisinde yer alan parça bilgilerini içeren nesne dizisi",
+          "properties": {
+            "ShipmentId": {
+              "type": "string",
+              "description": "Kolay Gelsin gönderi numarası."
+            },
+            "ShipmentItemId": {
+              "type": "string",
+              "description": "Gönderiye bağlı paketin Kolay Gelsin Id'si"
+            },
+            "CustomerTrackingId": {
+              "type": "string",
+              "description": "Barkoddan farklı olarak müşterinin pakete özgü takip numarası listesi"
+            },
+            "CustomerBarcode": {
+              "type": "string",
+              "description": "Paket üzerindeki müşteri barkodu"
+            },
+            "CustomerSpecificCode": {
+              "type": "string",
+              "description": "Gönderiyi temsil eden müşteri kodu"
+            },
+            "CargoEventLogModelList": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "CargoEventType": {
+                    "type": "string",
+                    "example": 1,
+                    "enum": [
+                      "1: Gönderi Kolay Gelsin sistemine kayıt edildi",
+                      "12: paket Kolay Gelsin tarafından teslim alındı",
+                      "17: Dağıtım yapacak kuryenin aracına yüklendi",
+                      "18: Dağıtım Kuryesi Transfer Merkezinden ayrıldı, teslimat adresine doğru yola çıktı",
+                      "25: Alıcı adresi hatalı",
+                      "26: Alıcı teslimat adresinde bulunamadı",
+                      "28: Alıcı teslimatı reddetti",
+                      "29: Gönderi teslim edildi",
+                      "31: Gönderen tarafından gönderi durduruldu, gönderene iade edilecek",
+                      "32: Alıcı talebi ile gönderinin iade gönderisi kaydedildi",
+                      "33: Gönderi kayıp",
+                      "35: Alıcı adresi problemli",
+                      "39: Dağıtım görevi ertesi iş gününe devredildi",
+                      "46: Devir depoya alınan gönderinin operasyonel iadesi kaydedildi",
+                      "58: Hasar raporu oluşturuldu"
+                    ]
+                  },
+                  "Latitude": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği enlem"
+                  },
+                  "Longitude": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği boylam"
+                  },
+                  "LocationName": {
+                    "type": "string",
+                    "description": "Aksiyonun gerçekleştiği yer"
+                  },
+                  "NumberPlate": {
+                    "type": "string",
+                    "description": "Gönderinin taşındığı veya yüklenmiş bulunduğu araç plakası"
+                  },
+                  "CourierName": {
+                    "type": "string",
+                    "description": "Gönderi eğer kuryeye zimmetlenmiş durumda ise kuryenin adı"
+                  },
+                  "DocumentType": {
+                    "type": "string",
+                    "description": "Gönderiye üzerinde alınan aksiyona dair bir doküman ilişkisi bulunması durumunda dokümanın tipini belirtir.",
+                    "example": 4,
+                    "enum": [
+                      "4: Teslim edilmiş gönderinin müşteri imzası",
+                      "5: Müşteri adreste bulunamadığı durumda kapıya yapıştırılıan notun fotoğrafı",
+                      "7: Hasar raporu",
+                      "8: Gönderinin zimmetlendiği kurye fotoğrafı",
+                      "9: Alcıya gönderilen email",
+                      "10: Alıcıya gönderilen sms"
+                    ]
+                  },
+                  "DocumentId": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Document alanının dolu olması halinde ilişkili olan dokümanın Id si"
+                  },
+                  "EventDetailModel": {
+                    "type": "object",
+                    "properties": {
+                      "DeliveryCancellationReason": {
+                        "type": "string",
+                        "description": "Gönderinin iptal nedeni",
+                        "example": 1,
+                        "enum": [
+                          "1: Standart",
+                          "2: Yasal",
+                          "3: Gönderici durdurdu"
+                        ]
+                      },
+                      "DeliveredPersonRole": {
+                        "type": "string",
+                        "description": "Gönderinin teslim alan kişinin yakınlık tipi"
+                      },
+                      "DeliveredPersonName": {
+                        "type": "string",
+                        "description": "Gönderinin teslim edildiği kişinin adı"
+                      },
+                      "PreviousDeliveryDate": {
+                        "type": "string",
+                        "description": "Planlanan eski teslimat tarihi"
+                      },
+                      "NewDeliveryDate": {
+                        "type": "string",
+                        "description": "Planlanan yeni teslimat tarihi"
+                      },
+                      "PreviousDeliveryTime": {
+                        "type": "string",
+                        "description": "Planlanan eski teslimat zaman periyodu"
+                      },
+                      "NewDeliveryTime": {
+                        "type": "string",
+                        "description": "Planlanan yeni teslimat zaman periyodu"
+                      },
+                      "ReturnShipmentId": {
+                        "type": "string",
+                        "description": "İade edilecek gönderinin yeni Kolay Gelsin gönderi numarası"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetCorporateCustomerCargoEventTypesResponseModel": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Aksiyon listesi",
+          "properties": {
+            "CargoEventType": {
+              "type": "integer",
+              "description": "Aksiyon Id si"
+            },
+            "EventCustomerDescription": {
+              "type": "string",
+              "description": "Aksiyonun açıklaması"
+            }
+          }
+        }
+      },
+      "GetDocumentForHistoryBodyModel": {
+        "type": "object",
+        "required": [
+          "DocumentId",
+          "DocumentType"
+        ],
+        "properties": {
+          "DocumentId": {
+            "type": "string",
+            "format": "binary",
+            "description": "Çekilmek istenen dokümanın Id si"
+          },
+          "DocumentType": {
+            "type": "integer",
+            "description": "Doküman tipi:4- Teslim edilmiş gönderinin müşteri imzası, 5- Müşteri adreste bulunamadığı durumda kapıya yapıştırılıan notun fotoğrafı, 7- Hasar raporu, 8- Gönderinin zimmetlendiği kurye fotoğrafı, 9-Alcıya gönderilen email, 10- Alıcıya gönderilen sms"
+          }
+        }
+      },
+      "GetDocumentForHistoryResponseModel": {
+        "type": "object",
+        "properties": {
+          "DocumentId": {
+            "type": "string",
+            "format": "binary",
+            "description": "Çekilmek istenen domanın Id si"
+          },
+          "Data": {
+            "type": "string",
+            "format": "byte",
+            "description": "Doküman PDF formatında ve byte array olarak donülmektedir."
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}
