@@ -74,7 +74,7 @@ class CreateShipmentResponse extends AbstractResponse implements ShipmentRespons
             return null;
         }
 
-        /** @var array<int, array{ShipmentItemId?: string, ShipmentItemIdLabel?: string, CustomerBarcode?: string}> $labels */
+        /** @var array<int, array{ShipmentItemId?: string, ShipmentItemLabel?: string, CustomerBarcode?: string}> $labels */
         $labels = $payload['ShipmentItemLabelList'];
 
         if ($labels === []) {
@@ -82,7 +82,7 @@ class CreateShipmentResponse extends AbstractResponse implements ShipmentRespons
         }
 
         $firstLabel = $labels[0];
-        $html = $firstLabel['ShipmentItemIdLabel'] ?? '';
+        $html = $firstLabel['ShipmentItemLabel'] ?? '';
 
         if ($html === '') {
             return null;
@@ -93,7 +93,7 @@ class CreateShipmentResponse extends AbstractResponse implements ShipmentRespons
             content: $html,
             format: LabelFormat::HTML,
             barcode: $firstLabel['CustomerBarcode'] ?? null,
-            shipmentId: $firstLabel['ShipmentItemId'] ?? null,
+            shipmentId: isset($firstLabel['ShipmentItemId']) ? (string) $firstLabel['ShipmentItemId'] : null,
         );
     }
 

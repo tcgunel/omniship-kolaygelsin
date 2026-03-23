@@ -39,6 +39,13 @@ class GetTrackingStatusRequest extends AbstractKolayGelsinRequest
             );
         }
 
+        // KolayGelsin's primary identifier is a numeric ShipmentId.
+        // If trackingNumber is numeric and shipmentId is not set, query by ShipmentId.
+        if ($shipmentId === null && $trackingNumber !== null && ctype_digit($trackingNumber)) {
+            $shipmentId = $trackingNumber;
+            $trackingNumber = null;
+        }
+
         return [
             'ShipmentIdList' => $shipmentId !== null ? [$shipmentId] : [],
             'CustomerSpecificCodeList' => [],
